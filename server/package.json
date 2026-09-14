@@ -1,0 +1,20 @@
+{
+  "name": "shipment-manager-server",
+  "version": "1.0.0",
+  "description": "Backend API for Shipment Manager",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "db:init": "node database/database.js",
+    "db:seed": "node database/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

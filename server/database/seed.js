@@ -20,11 +20,11 @@ function seedDatabase() {
     insertUser.run('Demo User', 'demo@example.com', hashedPassword, '9999999999');
 
     const insertShipment = db.prepare(
-      'INSERT INTO shipments (shipment_id, sender_name, receiver_name, package_details, destination, status) VALUES (?, ?, ?, ?, ?, ?)'
+      'INSERT INTO shipments (shipment_id, sender_name, receiver_name, package_details, source, destination, status) VALUES (?, ?, ?, ?, ?, ?, ?)'
     );
-    insertShipment.run('SHP-1001', 'Rahul Sharma', 'Amit Patil', 'Electronics', 'Pune', 'Created');
-    insertShipment.run('SHP-1002', 'Neha Joshi', 'Rohan Mehta', 'Documents', 'Mumbai', 'Created');
-    insertShipment.run('SHP-1003', 'Priya Verma', 'Sanjay Kulkarni', 'Clothing', 'Delhi', 'Created');
+    insertShipment.run('SHP-1001', 'Rahul Sharma', 'Amit Patil', 'Electronics', 'Bangalore', 'Pune', 'Created');
+    insertShipment.run('SHP-1002', 'Neha Joshi', 'Rohan Mehta', 'Documents', 'Pune', 'Mumbai', 'Created');
+    insertShipment.run('SHP-1003', 'Priya Verma', 'Sanjay Kulkarni', 'Clothing', 'Mumbai', 'Delhi', 'Created');
 
     console.log('Database seeded successfully.');
     console.log('');

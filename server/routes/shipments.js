@@ -17,7 +17,7 @@ function generateShipmentId() {
 
 router.post('/', (req, res) => {
   try {
-    const { sender_name, receiver_name, package_details, destination } = req.body;
+    const { sender_name, receiver_name, package_details, source, destination } = req.body;
 
     if (!sender_name || !sender_name.trim()) {
       return res.status(400).json({
@@ -40,6 +40,13 @@ router.post('/', (req, res) => {
       });
     }
 
+    if (!source || !source.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Source is required.'
+      });
+    }
+
     if (!destination || !destination.trim()) {
       return res.status(400).json({
         success: false,
@@ -52,13 +59,14 @@ router.post('/', (req, res) => {
 
     try {
       const stmt = db.prepare(
-        'INSERT INTO shipments (shipment_id, sender_name, receiver_name, package_details, destination) VALUES (?, ?, ?, ?, ?)'
+        'INSERT INTO shipments (shipment_id, sender_name, receiver_name, package_details, source, destination) VALUES (?, ?, ?, ?, ?, ?)'
       );
       const result = stmt.run(
         shipmentId,
         sender_name.trim(),
         receiver_name.trim(),
         package_details.trim(),
+        source.trim(),
         destination.trim()
       );
 
@@ -115,7 +123,14 @@ router.get('/:shipmentId', (req, res) => {
 router.put('/:shipmentId', (req, res) => {
   try {
     const { shipmentId } = req.params;
-    const { destination, package_details } = req.body;
+    const { source, destination, package_details } = req.body;
+
+    if (!source || !source.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Source is required.'
+      });
+    }
 
     if (!destination || !destination.trim()) {
       return res.status(400).json({
@@ -144,8 +159,8 @@ router.put('/:shipmentId', (req, res) => {
       }
 
       db.prepare(
-        "UPDATE shipments SET destination = ?, package_details = ?, updated_at = datetime('now') WHERE shipment_id = ?"
-      ).run(destination.trim(), package_details.trim(), shipmentId.trim());
+        "UPDATE shipments SET source = ?, destination = ?, package_details = ?, updated_at = datetime('now') WHERE shipment_id = ?"
+      ).run(source.trim(), destination.trim(), package_details.trim(), shipmentId.trim());
 
       const updated = db.prepare('SELECT * FROM shipments WHERE shipment_id = ?').get(shipmentId.trim());
 

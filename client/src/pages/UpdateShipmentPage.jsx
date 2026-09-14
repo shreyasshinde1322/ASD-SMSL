@@ -4,6 +4,7 @@ import { shipmentAPI } from '../services/api';
 function UpdateShipmentPage() {
   const [shipmentId, setShipmentId] = useState('');
   const [formData, setFormData] = useState({
+    source: '',
     destination: '',
     package_details: '',
   });
@@ -30,6 +31,7 @@ function UpdateShipmentPage() {
       const response = await shipmentAPI.getByShipmentId(shipmentId.trim());
       const shipment = response.data;
       setFormData({
+        source: shipment.source,
         destination: shipment.destination,
         package_details: shipment.package_details,
       });
@@ -50,6 +52,7 @@ function UpdateShipmentPage() {
     const newErrors = {};
     if (!shipmentId.trim()) newErrors.shipment_id = 'Shipment ID is required.';
     if (!found) newErrors.shipment_id = 'Please look up a valid shipment first.';
+    if (!formData.source.trim()) newErrors.source = 'Source is required.';
     if (!formData.destination.trim()) newErrors.destination = 'Destination is required.';
     if (!formData.package_details.trim()) newErrors.package_details = 'Package details are required.';
     setErrors(newErrors);
@@ -81,7 +84,7 @@ function UpdateShipmentPage() {
 
   const handleReset = () => {
     setShipmentId('');
-    setFormData({ destination: '', package_details: '' });
+    setFormData({ source: '', destination: '', package_details: '' });
     setErrors({});
     setServerError('');
     setSuccess(null);
@@ -116,6 +119,10 @@ function UpdateShipmentPage() {
             <div className="success-detail">
               <span className="success-detail-label">Shipment ID</span>
               <span className="success-detail-value">{success.shipment_id}</span>
+            </div>
+            <div className="success-detail">
+              <span className="success-detail-label">Source</span>
+              <span className="success-detail-value">{success.source}</span>
             </div>
             <div className="success-detail">
               <span className="success-detail-label">Destination</span>
@@ -204,6 +211,17 @@ function UpdateShipmentPage() {
                   </svg>
                   Update Information
                 </h3>
+                <div className="form-group">
+                  <label className="form-label">Source</label>
+                  <input
+                    type="text"
+                    className={`form-input ${errors.source ? 'input-error' : ''}`}
+                    placeholder="e.g. Bangalore, Hyderabad"
+                    value={formData.source}
+                    onChange={(e) => { setFormData(prev => ({ ...prev, source: e.target.value })); setErrors(prev => ({ ...prev, source: '' })); }}
+                  />
+                  {errors.source && <span className="form-error">{errors.source}</span>}
+                </div>
                 <div className="form-group">
                   <label className="form-label">Destination</label>
                   <input

@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS shipments (
   sender_name TEXT NOT NULL,
   receiver_name TEXT NOT NULL,
   package_details TEXT NOT NULL,
+  source TEXT NOT NULL DEFAULT '',
   destination TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'Created',
   created_at TEXT DEFAULT (datetime('now')),

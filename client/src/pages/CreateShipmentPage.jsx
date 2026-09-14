@@ -6,6 +6,7 @@ function CreateShipmentPage() {
     sender_name: '',
     receiver_name: '',
     package_details: '',
+    source: '',
     destination: '',
   });
 
@@ -26,6 +27,7 @@ function CreateShipmentPage() {
     if (!formData.sender_name.trim()) newErrors.sender_name = 'Sender name is required.';
     if (!formData.receiver_name.trim()) newErrors.receiver_name = 'Receiver name is required.';
     if (!formData.package_details.trim()) newErrors.package_details = 'Package details are required.';
+    if (!formData.source.trim()) newErrors.source = 'Source is required.';
     if (!formData.destination.trim()) newErrors.destination = 'Destination is required.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -43,7 +45,7 @@ function CreateShipmentPage() {
     try {
       const response = await shipmentAPI.create(formData);
       setSuccess(response.data);
-      setFormData({ sender_name: '', receiver_name: '', package_details: '', destination: '' });
+      setFormData({ sender_name: '', receiver_name: '', package_details: '', source: '', destination: '' });
       setErrors({});
     } catch (err) {
       setServerError(err.message || 'Failed to create shipment.');
@@ -53,7 +55,7 @@ function CreateShipmentPage() {
   };
 
   const handleReset = () => {
-    setFormData({ sender_name: '', receiver_name: '', package_details: '', destination: '' });
+    setFormData({ sender_name: '', receiver_name: '', package_details: '', source: '', destination: '' });
     setErrors({});
     setServerError('');
     setSuccess(null);
@@ -91,6 +93,10 @@ function CreateShipmentPage() {
             <div className="success-detail">
               <span className="success-detail-label">Status</span>
               <span className="success-detail-value status-badge">{success.status}</span>
+            </div>
+            <div className="success-detail">
+              <span className="success-detail-label">Source</span>
+              <span className="success-detail-value">{success.source}</span>
             </div>
             <div className="success-detail">
               <span className="success-detail-label">Destination</span>
@@ -194,8 +200,19 @@ function CreateShipmentPage() {
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
-              Destination
+              Route
             </h3>
+            <div className="form-group">
+              <label className="form-label">Source</label>
+              <input
+                type="text"
+                className={`form-input ${errors.source ? 'input-error' : ''}`}
+                placeholder="e.g. Bangalore, Hyderabad, Chennai"
+                value={formData.source}
+                onChange={(e) => handleChange('source', e.target.value)}
+              />
+              {errors.source && <span className="form-error">{errors.source}</span>}
+            </div>
             <div className="form-group">
               <label className="form-label">Destination</label>
               <input

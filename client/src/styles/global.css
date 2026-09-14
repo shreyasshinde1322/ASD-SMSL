@@ -808,6 +808,105 @@ html, body {
   width: fit-content;
 }
 
+/* ===== CONFIRMATION MODAL ===== */
+.confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 18, 37, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 200;
+  animation: fadeIn 150ms ease;
+}
+
+.confirmation-modal {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: var(--shadow-xl);
+  animation: slideUp 180ms ease;
+}
+
+.confirmation-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-warning);
+  color: white;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.confirmation-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.confirmation-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+}
+
+.confirmation-text strong {
+  color: var(--color-primary);
+}
+
+.confirmation-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.confirmation-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+}
+
+.confirmation-detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.confirmation-detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .navbar-inner {
@@ -857,6 +956,18 @@ html, body {
 
   .input-with-button {
     flex-direction: column;
+  }
+
+  .confirmation-details {
+    grid-template-columns: 1fr;
+  }
+
+  .confirmation-actions {
+    flex-direction: column;
+  }
+
+  .confirmation-actions .btn {
+    width: 100%;
   }
 }
 

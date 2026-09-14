@@ -14,6 +14,7 @@ function UpdateShipmentPage() {
   const [success, setSuccess] = useState(null);
   const [serverError, setServerError] = useState('');
   const [found, setFound] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleLookup = async () => {
     if (!shipmentId.trim()) {
@@ -63,6 +64,14 @@ function UpdateShipmentPage() {
 
     if (!validate()) return;
 
+    setShowConfirm(true);
+  };
+
+  const handleConfirmUpdate = async () => {
+    setShowConfirm(false);
+    setServerError('');
+    setSuccess(null);
+
     setLoading(true);
 
     try {
@@ -86,6 +95,7 @@ function UpdateShipmentPage() {
     setServerError('');
     setSuccess(null);
     setFound(false);
+    setShowConfirm(false);
   };
 
   return (
@@ -252,6 +262,55 @@ function UpdateShipmentPage() {
             </>
           )}
         </form>
+      )}
+
+      {showConfirm && (
+        <div className="confirmation-overlay" onClick={() => setShowConfirm(false)}>
+          <div className="confirmation-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="confirmation-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <h3 className="confirmation-title">Confirm Shipment Update</h3>
+            <p className="confirmation-text">
+              Are you sure you want to update shipment
+              <strong> {shipmentId}</strong>? This will overwrite the current details.
+            </p>
+            <div className="confirmation-details">
+              <div className="confirmation-detail">
+                <span className="confirmation-detail-label">Destination</span>
+                <span className="confirmation-detail-value">{formData.destination}</span>
+              </div>
+              <div className="confirmation-detail">
+                <span className="confirmation-detail-label">Package Details</span>
+                <span className="confirmation-detail-value">{formData.package_details}</span>
+              </div>
+            </div>
+            <div className="confirmation-actions">
+              <button type="button" className="btn btn-secondary" onClick={() => setShowConfirm(false)}>
+                Cancel
+              </button>
+              <button type="button" className="btn btn-primary" onClick={handleConfirmUpdate} disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="btn-spinner" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                    Yes, Update
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -7,6 +7,7 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState('');
@@ -15,6 +16,12 @@ function LoginPage() {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       navigate('/create-shipment');
+      return;
+    }
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
     }
   }, [navigate]);
 
@@ -49,6 +56,12 @@ function LoginPage() {
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email.trim());
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
 
       navigate('/create-shipment');
     } catch (err) {
@@ -155,6 +168,20 @@ function LoginPage() {
               </div>
               {passwordError && <span className="login-field-error">{passwordError}</span>}
             </div>
+
+            <label className="login-remember">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span className="login-checkbox" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <span className="login-remember-text">Remember me</span>
+            </label>
 
             <button type="submit" className="login-button" disabled={loading}>
               {loading ? (

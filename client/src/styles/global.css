@@ -246,6 +246,63 @@ html, body {
   font-weight: 500;
 }
 
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  margin-top: -8px;
+}
+
+.login-remember input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.login-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-card);
+  color: transparent;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.login-remember:hover .login-checkbox {
+  border-color: var(--color-accent);
+}
+
+.login-remember input:focus-visible + .login-checkbox {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.login-remember input:checked + .login-checkbox {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+
+.login-remember-text {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  transition: color var(--transition);
+}
+
+.login-remember:hover .login-remember-text {
+  color: var(--color-text);
+}
+
 .login-button {
   display: flex;
   align-items: center;

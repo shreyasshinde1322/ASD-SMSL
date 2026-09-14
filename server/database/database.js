@@ -18,6 +18,15 @@ function initializeDatabase() {
 
   try {
     db.exec(schema);
+
+    const hasSource = db.prepare(
+      "SELECT COUNT(*) AS cnt FROM pragma_table_info('shipments') WHERE name = 'source'"
+    ).get();
+    if (hasSource.cnt === 0) {
+      db.exec("ALTER TABLE shipments ADD COLUMN source TEXT NOT NULL DEFAULT ''");
+      console.log('Migrated: added source column to shipments table.');
+    }
+
     console.log('Database initialized successfully at:', DB_PATH);
   } catch (error) {
     console.error('Error initializing database:', error.message);

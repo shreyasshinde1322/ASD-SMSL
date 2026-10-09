@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authAPI } from '../services/api';
+import { validateLogin } from '../utils/loginValidation';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -26,21 +27,20 @@ function LoginPage() {
   }, [navigate]);
 
   const validate = () => {
-    let valid = true;
     setEmailError('');
     setPasswordError('');
 
-    if (!email.trim()) {
+    const result = validateLogin(email.trim(), password);
+
+    if (result === 'Login successful') return true;
+
+    if (result === 'Email/Username is required') {
       setEmailError('Please enter your email.');
-      valid = false;
+    } else {
+      setPasswordError(result);
     }
 
-    if (!password.trim()) {
-      setPasswordError('Please enter your password.');
-      valid = false;
-    }
-
-    return valid;
+    return false;
   };
 
   const handleSubmit = async (e) => {

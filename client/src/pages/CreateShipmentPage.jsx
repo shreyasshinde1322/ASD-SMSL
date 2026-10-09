@@ -1,14 +1,25 @@
 import { useState } from 'react';
 import { shipmentAPI } from '../services/api';
+import { validateShipment } from '../utils/shipmentValidation';
+
+const SHIPMENT_FIELDS = {
+  'Sender Name is required': 'sender_name',
+  'Receiver Name is required': 'receiver_name',
+  'Package Details are required': 'package_details',
+  'Source is required': 'source',
+  'Destination is required': 'destination',
+};
+
+const EMPTY_FORM = {
+  sender_name: '',
+  receiver_name: '',
+  package_details: '',
+  source: '',
+  destination: '',
+};
 
 function CreateShipmentPage() {
-  const [formData, setFormData] = useState({
-    sender_name: '',
-    receiver_name: '',
-    package_details: '',
-    source: '',
-    destination: '',
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -24,11 +35,20 @@ function CreateShipmentPage() {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.sender_name.trim()) newErrors.sender_name = 'Sender name is required.';
-    if (!formData.receiver_name.trim()) newErrors.receiver_name = 'Receiver name is required.';
-    if (!formData.package_details.trim()) newErrors.package_details = 'Package details are required.';
-    if (!formData.source.trim()) newErrors.source = 'Source is required.';
-    if (!formData.destination.trim()) newErrors.destination = 'Destination is required.';
+
+    const result = validateShipment(
+      formData.sender_name,
+      formData.receiver_name,
+      formData.package_details,
+      formData.source,
+      formData.destination
+    );
+
+    if (result !== 'Shipment is valid') {
+      const field = SHIPMENT_FIELDS[result];
+      if (field) newErrors[field] = `${result}.`;
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -45,7 +65,7 @@ function CreateShipmentPage() {
     try {
       const response = await shipmentAPI.create(formData);
       setSuccess(response.data);
-      setFormData({ sender_name: '', receiver_name: '', package_details: '', source: '', destination: '' });
+      setFormData(EMPTY_FORM);
       setErrors({});
     } catch (err) {
       setServerError(err.message || 'Failed to create shipment.');
@@ -55,7 +75,7 @@ function CreateShipmentPage() {
   };
 
   const handleReset = () => {
-    setFormData({ sender_name: '', receiver_name: '', package_details: '', source: '', destination: '' });
+    setFormData(EMPTY_FORM);
     setErrors({});
     setServerError('');
     setSuccess(null);

@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint src"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -17,6 +21,10 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.0"
+    "@vitest/coverage-v8": "^5.0.3",
+    "eslint": "^9.39.5",
+    "jsdom": "^30.1.1",
+    "vite": "^6.0.0",
+    "vitest": "^5.0.3"
   }
 }

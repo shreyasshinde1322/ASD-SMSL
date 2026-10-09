@@ -2,4 +2,6 @@ node_modules/
 .env
 *.db
 dist/
+coverage/
+lint-report.txt
 .DS_Store

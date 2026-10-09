@@ -9,9 +9,11 @@
     "install:all": "cd server && npm install && cd ../client && npm install",
     "db:init": "cd server && npm run db:init",
     "db:seed": "cd server && npm run db:seed",
-    "setup": "npm run install:all && npm run db:init && npm run db:seed"
+    "setup": "npm run install:all && npm run db:init && npm run db:seed",
+    "test": "vitest"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "vitest": "^5.0.3"
   }
 }
